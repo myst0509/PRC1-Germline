@@ -1,0 +1,19 @@
+# Sample tables. Fill in as datasets are fetched (see data/accessions.tsv).
+# Keep ChIP and input (control) samples paired by name prefix.
+
+chip_samples:
+  # - Jarid2_rep1
+  # - Pcl_rep1
+
+chip_inputs:
+  # - input_rep1
+
+rna_samples:
+  # - ovary_control_rep1
+  # - ovary_PcG_KD_rep1
+
+genome:
+  fasta: "data/ref/dm6.fa"        # TODO: download dm6 from UCSC / Ensembl
+  gtf: "data/ref/dm6.gtf"         # TODO: matching annotation
+  bowtie2_index: "data/ref/bowtie2/dm6"
+  star_index: "data/ref/star/dm6"

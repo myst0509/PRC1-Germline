@@ -1,0 +1,22 @@
+# raw data & intermediates
+data/raw/
+results/
+*.fastq
+*.fastq.gz
+*.bam
+*.bai
+*.sam
+
+# python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.conda/
+*.egg-info/
+
+# snakemake
+.snakemake/
+
+# OS / editors
+.DS_Store
+.vscode/

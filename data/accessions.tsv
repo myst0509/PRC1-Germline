@@ -1,0 +1,10 @@
+# Fill in SRA run accessions per dataset as you fetch them.
+# One row per sample. Fetch with: bash data/fetch_data.sh <GSE>
+
+dataset	accession	type	description
+GSE201842	SRR_TBD	chip	BioTAP-Jarid2 ChIP-seq replicate 1
+GSE201842	SRR_TBD	chip	BioTAP-Pcl ChIP-seq replicate 1
+GSE66183	SRR_TBD	chip	BioTAP-E(z) ChIP-seq replicate 1
+GSE66183	SRR_TBD	chip	BioTAP-Scm ChIP-seq replicate 1
+ovary_rna	TBD	rna	control ovary RNA-seq
+ovary_rna	TBD	rna	Polycomb-depleted ovary RNA-seq

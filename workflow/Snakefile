@@ -1,0 +1,92 @@
+configfile: "config/config.yaml"
+
+
+rule all:
+    input:
+        expand("results/peaks/{s}_peaks.narrowPeak", s=config["chip_samples"]),
+        "results/rna/deseq2_results.tsv",
+        "results/integration/peak_gene_overlap.tsv",
+
+
+rule trim:
+    input:
+        "data/raw/{sample}.fastq.gz",
+    output:
+        "results/trimmed/{sample}.fastq.gz",
+    shell:
+        "fastp -i {input} -o {output} -h results/qc/{wildcards.sample}.html -j results/qc/{wildcards.sample}.json"
+
+
+rule align_chip:
+    input:
+        "results/trimmed/{sample}.fastq.gz",
+    output:
+        "results/bam_chip/{sample}.sorted.bam",
+    params:
+        idx=config["genome"]["bowtie2_index"],
+    threads: 8
+    shell:
+        "bowtie2 -p {threads} -x {params.idx} -U {input} "
+        "| samtools sort -@ {threads} -o {output} && samtools index {output}"
+
+
+rule call_peaks:
+    input:
+        chip="results/bam_chip/{sample}.sorted.bam",
+        ctrl="results/bam_chip/{input_sample}.sorted.bam",
+    output:
+        "results/peaks/{sample}_peaks.narrowPeak",
+    params:
+        outdir="results/peaks",
+        name="{sample}",
+    shell:
+        "macs2 callpeak -t {input.chip} -c {input.ctrl} "
+        "-f BAM -g dm -n {params.name} --outdir {params.outdir} -q 0.05"
+
+
+rule align_rna:
+    input:
+        "results/trimmed/{sample}.fastq.gz",
+    output:
+        "results/bam_rna/{sample}.sorted.bam",
+    params:
+        idx=config["genome"]["star_index"],
+    threads: 8
+    shell:
+        "STAR --runThreadN {threads} --genomeDir {params.idx} "
+        "--readFilesIn {input} --readFilesCommand zcat "
+        "--outSAMtype BAM SortedByCoordinate "
+        "--outFileNamePrefix results/bam_rna/{wildcards.sample}."
+
+
+rule count:
+    input:
+        expand("results/bam_rna/{s}.sorted.bam", s=config["rna_samples"]),
+    output:
+        "results/rna/counts.tsv",
+    params:
+        gtf=config["genome"]["gtf"],
+    threads: 8
+    shell:
+        "featureCounts -T {threads} -a {params.gtf} -o {output} {input}"
+
+
+rule deseq2:
+    input:
+        "results/rna/counts.tsv",
+    output:
+        "results/rna/deseq2_results.tsv",
+    script:
+        "../scripts/run_deseq2.py"
+
+
+rule integrate:
+    input:
+        peaks=expand("results/peaks/{s}_peaks.narrowPeak", s=config["chip_samples"]),
+        de="results/rna/deseq2_results.tsv",
+    output:
+        "results/integration/peak_gene_overlap.tsv",
+    params:
+        gtf=config["genome"]["gtf"],
+    script:
+        "../scripts/annotate_peaks.py"
