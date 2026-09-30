@@ -1,0 +1,2 @@
+# Keep LF everywhere so scripts run under WSL/Linux
+* text=auto eol=lf
