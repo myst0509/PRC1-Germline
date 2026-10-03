@@ -41,11 +41,21 @@ peak callers. This is his first computational genomics project.
     `conda activate prc1-germline`.
 
 ## Data plan (in this order — don't parallelize until step 1 works end to end)
-1. `GSE201842` — BioTAP ChIP-seq (Jarid2, Pcl). Start here.
-2. `GSE66183` — BioTAP ChIP-seq (E(z), Scm).
-3. modENCODE Pc/Ph developmental ChIP data.
-4. Ovary RNA-seq (Polycomb-depleted vs control) — accessions TBD, see
-   `data/accessions.tsv`.
+1. `GSE201842` — BioTAP ChIP-seq (Jarid2, Pcl), **12–24 h embryos**, not
+   germline. Pipeline test + embryonic reference. Start here.
+2. `GSE145282` ChIP (PMID 32773039) — sorted germ cells: Ph (PRC1) in GSC
+   and ovary, Pho in GSC, H3K27me3 GSC → 2C → 16C → NC. Mostly single
+   replicates; one GSC Ph sort is in a Pcl-GLKD background.
+3. `GSE145282` RNA-seq — germline KD of Sce, Pc, Scm (PRC1), E(z), Pcl,
+   Jarid2 (PRC2) vs Luc/w controls, 3 reps each.
+4. Integrate: Ph-bound genes ∩ genes derepressed on Sce/Pc/Scm GLKD.
+5. Optional: `GSE176034` (Sfmbt GLKD RNA-seq + Pho ChIP, ovary) for
+   recruitment; `GSE174250` / `GSE250350` / `GSE335290` H3K27me3 to check
+   replication across labs.
+- Dropped `GSE66183` (embryo/S2) and modENCODE (whole animal): no germline
+  data and redundant with step 1.
+- Known gap (GEO search 2026-10-03): no Sce, Psc or H2Aub profiling in
+  ovary/GSC — germline PRC1 occupancy is only measurable via Ph.
 
 ## Conventions
 - Raw reads live in `data/raw/` (git-ignored). Never commit them.
