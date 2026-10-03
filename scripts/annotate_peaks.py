@@ -11,11 +11,13 @@ import pandas as pd
 import pyranges as pr
 
 
-def load_peaks(path: str) -> pr.PyRanges:
+def load_peaks(paths: list[str]) -> pr.PyRanges:
     cols = ["Chromosome", "Start", "End", "name", "score", "strand",
             "signalValue", "pValue", "qValue", "peak"]
-    df = pd.read_csv(path, sep="\t", header=None, names=cols,
-                     usecols=["Chromosome", "Start", "End", "name", "qValue"])
+    df = pd.concat(
+        pd.read_csv(p, sep="\t", header=None, names=cols,
+                    usecols=["Chromosome", "Start", "End", "name", "qValue"])
+        for p in paths)
     return pr.PyRanges(df)
 
 
@@ -39,7 +41,7 @@ def load_tss(gtf_path: str) -> pr.PyRanges:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--peaks", required=True)
+    ap.add_argument("--peaks", nargs="+", required=True)
     ap.add_argument("--gtf", required=True)
     ap.add_argument("--de", required=True, help="PyDESeq2 results with gene, padj, log2FoldChange")
     ap.add_argument("--out", required=True)

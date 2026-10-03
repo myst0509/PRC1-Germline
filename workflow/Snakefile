@@ -99,5 +99,6 @@ rule integrate:
         "results/integration/peak_gene_overlap.tsv",
     params:
         gtf=config["genome"]["gtf"],
-    script:
-        "../scripts/annotate_peaks.py"
+    shell:
+        "python scripts/annotate_peaks.py --peaks {input.peaks} "
+        "--gtf {params.gtf} --de {input.de} --out {output}"
