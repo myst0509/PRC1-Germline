@@ -1,7 +1,7 @@
 configfile: "config/config.yaml"
 
 # A YAML key with only comments under it loads as None, not []
-CHIP = config.get("chip_samples") or []
+CHIP = config.get("chip_samples") or {}  # {chip_sample: input_sample}
 RNA = config.get("rna_samples") or []
 
 
@@ -44,7 +44,7 @@ rule align_chip:
 rule call_peaks:
     input:
         chip="results/bam_chip/{sample}.sorted.bam",
-        ctrl="results/bam_chip/{input_sample}.sorted.bam",
+        ctrl=lambda wc: f"results/bam_chip/{CHIP[wc.sample]}.sorted.bam",
     output:
         "results/peaks/{sample}_peaks.narrowPeak",
     params:

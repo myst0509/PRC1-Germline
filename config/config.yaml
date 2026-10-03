@@ -1,12 +1,10 @@
 # Sample tables. Fill in as datasets are fetched (see data/accessions.tsv).
-# Keep ChIP and input (control) samples paired by name prefix.
+# chip_samples maps each ChIP sample to the input (control) it is called against.
+# Inputs get aligned automatically; don't list them separately.
 
 chip_samples:
-  # - Jarid2_rep1
-  # - Pcl_rep1
-
-chip_inputs:
-  # - input_rep1
+  # Jarid2_rep1: input_rep1
+  # Pcl_rep1: input_rep1
 
 rna_samples:
   # - ovary_control_rep1
