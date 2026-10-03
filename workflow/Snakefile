@@ -1,11 +1,22 @@
 configfile: "config/config.yaml"
 
+# A YAML key with only comments under it loads as None, not []
+CHIP = config.get("chip_samples") or []
+RNA = config.get("rna_samples") or []
+
+
+def final_targets():
+    targets = expand("results/peaks/{s}_peaks.narrowPeak", s=CHIP)
+    if RNA:
+        targets.append("results/rna/deseq2_results.tsv")
+    if CHIP and RNA:
+        targets.append("results/integration/peak_gene_overlap.tsv")
+    return targets
+
 
 rule all:
     input:
-        expand("results/peaks/{s}_peaks.narrowPeak", s=config["chip_samples"]),
-        "results/rna/deseq2_results.tsv",
-        "results/integration/peak_gene_overlap.tsv",
+        final_targets(),
 
 
 rule trim:
@@ -61,7 +72,7 @@ rule align_rna:
 
 rule count:
     input:
-        expand("results/bam_rna/{s}.sorted.bam", s=config["rna_samples"]),
+        expand("results/bam_rna/{s}.sorted.bam", s=RNA),
     output:
         "results/rna/counts.tsv",
     params:
@@ -82,7 +93,7 @@ rule deseq2:
 
 rule integrate:
     input:
-        peaks=expand("results/peaks/{s}_peaks.narrowPeak", s=config["chip_samples"]),
+        peaks=expand("results/peaks/{s}_peaks.narrowPeak", s=CHIP),
         de="results/rna/deseq2_results.tsv",
     output:
         "results/integration/peak_gene_overlap.tsv",
