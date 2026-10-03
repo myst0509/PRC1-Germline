@@ -67,7 +67,10 @@ rule align_rna:
         "STAR --runThreadN {threads} --genomeDir {params.idx} "
         "--readFilesIn {input} --readFilesCommand zcat "
         "--outSAMtype BAM SortedByCoordinate "
-        "--outFileNamePrefix results/bam_rna/{wildcards.sample}."
+        "--outFileNamePrefix results/bam_rna/{wildcards.sample}. "
+        # STAR names its own BAM; rename to what the rule promises
+        "&& mv results/bam_rna/{wildcards.sample}.Aligned.sortedByCoord.out.bam {output} "
+        "&& samtools index {output}"
 
 
 rule count:
