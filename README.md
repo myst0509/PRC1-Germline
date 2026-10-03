@@ -11,15 +11,14 @@ This project is fully reproducible from public data — no private datasets requ
 
 ## Datasets
 
-| # | Data | Source | Accession / pointer |
-|---|------|--------|---------------------|
-| 1 | BioTAP ChIP-seq: Jarid2, Pcl (PRC1/PRC2-associated) | GEO | `GSE201842` |
-| 2 | BioTAP ChIP-seq: E(z), Scm | GEO | `GSE66183` |
-| 3 | Pc / Ph ChIP-chip developmental time course | modENCODE (Negre et al.) | modencode.org, see `data/accessions.tsv` |
-| 4 | Ovary RNA-seq after germline Polycomb depletion; GSC H3K27me3 ChIP-seq | GEO | TBD — see paper refs in `data/accessions.tsv` |
+| # | Data | Tissue | Accession |
+|---|------|--------|-----------|
+| 1 | BioTAP ChIP-seq: Jarid2, Pcl (PRC2 accessory subunits) — pipeline test, embryonic reference | 12–24 h embryos | `GSE201842` |
+| 2 | ChIP-seq on sorted germ cells: Ph (PRC1), Pho, H3K27me3 across GSC → nurse cell | ovary germline | `GSE145282` |
+| 3 | RNA-seq after germline knockdown of Sce, Pc, Scm (PRC1) and E(z), Pcl, Jarid2 (PRC2) | ovary | `GSE145282` |
 
-Raw reads are **not** stored in this repo. `data/fetch_data.sh` downloads
-them from SRA given a `GSE` accession.
+Verified run accessions are in `data/accessions.tsv`. Raw reads are **not**
+stored in this repo; `data/fetch_data.sh` downloads them from SRA.
 
 ## Pipeline
 
