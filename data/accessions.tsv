@@ -1,10 +1,13 @@
-# Fill in SRA run accessions per dataset as you fetch them.
-# One row per sample. Fetch with: bash data/fetch_data.sh <GSE>
+# Verified SRA runs, one row per run (a sample can have several runs).
+# Source: NCBI SRA runinfo for each GEO series. Never add unverified accessions.
+# Fetch with: bash data/fetch_data.sh <dataset>
 
-dataset	accession	type	description
-GSE201842	SRR_TBD	chip	BioTAP-Jarid2 ChIP-seq replicate 1
-GSE201842	SRR_TBD	chip	BioTAP-Pcl ChIP-seq replicate 1
-GSE66183	SRR_TBD	chip	BioTAP-E(z) ChIP-seq replicate 1
-GSE66183	SRR_TBD	chip	BioTAP-Scm ChIP-seq replicate 1
-ovary_rna	TBD	rna	control ovary RNA-seq
-ovary_rna	TBD	rna	Polycomb-depleted ovary RNA-seq
+dataset	gsm	run	sample	assay	layout	read_len
+GSE201842	GSM6077020	SRR18970070	Jarid2_IP_A	chip	SINGLE	51
+GSE201842	GSM6077021	SRR18970069	Jarid2_IP_B	chip	SINGLE	51
+GSE201842	GSM6077022	SRR18970067	Jarid2_input	chip	SINGLE	51
+GSE201842	GSM6077022	SRR18970068	Jarid2_input	chip	SINGLE	51
+GSE201842	GSM6077023	SRR18970066	Pcl_IP_A	chip	SINGLE	51
+GSE201842	GSM6077024	SRR18970065	Pcl_IP_B	chip	SINGLE	51
+GSE201842	GSM6077025	SRR18970063	Pcl_input	chip	SINGLE	51
+GSE201842	GSM6077025	SRR18970064	Pcl_input	chip	SINGLE	51
