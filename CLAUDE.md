@@ -28,13 +28,17 @@ peak callers. This is his first computational genomics project.
 - Toolchain: `env.yml` (mamba/conda, conda-forge + bioconda channels)
 - Reference genome: *Drosophila* dm6 — FASTA/GTF download source TBD,
   record the exact URLs in `config/config.yaml` once chosen
-- Machine (checked 2026-09-30): Windows 11 Home, 8 cores, 16 GB RAM.
-  Free disk: C: 17.8 GB (too small), D: 137.5 GB — put raw data/results on D:.
-  ChIP-seq + RNA-seq needs ~50–100 GB scratch; confirm before fetching.
-  - Bioconda tools don't run natively on Windows → run everything in WSL2
-    (Ubuntu) with Miniforge/mamba. WSL2 + conda: not installed yet.
-  - 16 GB RAM is tight for a STAR dm6 index: use `--genomeSAsparseD 2`
-    (or 3) when running `genomeGenerate`.
+- Machine (checked 2026-10-03): Windows 11 Home, 8 cores, 16 GB RAM.
+  Everything runs in WSL2 Ubuntu 26.04 (bioconda tools are Linux-only).
+  - Ubuntu's disk lives at `D:\WSL\Ubuntu` (C: is nearly full). D: is a
+    spinning HDD: I/O-heavy steps will be slower than on SSD.
+  - Repo, raw data and results all live inside Linux at `~/prc1-germline`;
+    avoid `/mnt/c` / `/mnt/d` for pipeline I/O (slow).
+  - Free space on D: ~136 GB. ChIP-seq + RNA-seq needs ~50–100 GB scratch;
+    confirm before fetching.
+  - WSL gets 7 GB RAM by default — enough for a dm6 STAR index (~2–3 GB).
+  - Miniforge at `~/miniforge3`; env `prc1-germline` (~4 GB), activate with
+    `conda activate prc1-germline`.
 
 ## Data plan (in this order — don't parallelize until step 1 works end to end)
 1. `GSE201842` — BioTAP ChIP-seq (Jarid2, Pcl). Start here.
